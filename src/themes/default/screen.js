@@ -89,6 +89,22 @@ const screen = (colorArgs = defaultColors, fontArgs = defaultFonts) => {
         fill: colors.tertiary,
       },
     },
+    homeButton: {
+      container: {
+        position: 'absolute',
+        top: '0.5em',
+        left: '0.5em',
+        width: '1em',
+        height: '1em',
+        cursor: 'pointer',
+        fill: 'rgba(216, 216, 216, 0.5)',
+        zIndex: 9999,
+        transition: 'fill 0.5s ease-in-out',
+        '&:hover': {
+          fill: 'rgba(216, 216, 216, 0.9)',
+        }
+      }
+    },
     controls: {
       prev: {
         position: 'absolute',

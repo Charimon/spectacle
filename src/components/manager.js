@@ -20,6 +20,7 @@ import Presenter from './presenter';
 import Export from './export';
 import Overview from './overview';
 import Magic from './magic';
+import HomeButton from './home-button'
 
 import AutoplayControls from './autoplay-controls';
 import Fullscreen from './fullscreen';
@@ -68,6 +69,7 @@ export class Manager extends Component {
     transitionDuration: 500,
     progress: 'pacman',
     controls: true,
+    homeButton: true,
     globalStyles: true,
   };
 
@@ -78,6 +80,7 @@ export class Manager extends Component {
     contentHeight: PropTypes.number,
     contentWidth: PropTypes.number,
     controls: PropTypes.bool,
+    homeButton: PropTypes.bool,
     dispatch: PropTypes.func,
     fragment: PropTypes.object,
     globalStyles: PropTypes.bool,
@@ -723,6 +726,13 @@ export class Manager extends Component {
       this.props.route.params.indexOf('overview') === -1 &&
       this.props.route.params.indexOf('presenter') === -1;
 
+    const showHomeButton =
+      !this.state.fullscreen &&
+      !this.state.mobile &&
+      this.props.route.params.indexOf('export') === -1 &&
+      this.props.route.params.indexOf('overview') === -1 &&
+      this.props.route.params.indexOf('presenter') === -1;
+
     const { googleFonts = {} } = this.context.styles;
     const googleFontsElements = Object.keys(googleFonts).map((key, index) => (
       <Typeface
@@ -739,6 +749,7 @@ export class Manager extends Component {
         onClick={this.handleClick}
         {...this._getTouchEvents()}
       >
+        {this.props.homeButton && showHomeButton && <HomeButton />}
         {this.props.controls &&
           showControls && (
             <Controls
