@@ -636,7 +636,6 @@ export class Manager extends Component {
   }
   _getSlideIndex() {
     let index = parseInt(this.props.route.slide);
-    console.log("SLIDE INDEX", this.props.route.slide)
     if (!Number.isFinite(index)) {
       const foundIndex = findIndex(this.state.slideReference, reference => {
         return this.props.route.slide === reference.id;
