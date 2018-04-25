@@ -15,6 +15,7 @@ import { getSlideByIndex } from '../utils/slides';
 import styled from 'react-emotion';
 import { string as toStringStyle } from 'to-style';
 import memoize from 'lodash/memoize';
+import isFunction from 'lodash/isFunction';
 
 import Presenter from './presenter';
 import Export from './export';
@@ -80,7 +81,7 @@ export class Manager extends Component {
     contentHeight: PropTypes.number,
     contentWidth: PropTypes.number,
     controls: PropTypes.bool,
-    homeButton: PropTypes.bool,
+    homeButton: PropTypes.oneOfType([PropTypes.bool, PropTypes.func, PropTypes.node]),
     dispatch: PropTypes.func,
     fragment: PropTypes.object,
     globalStyles: PropTypes.bool,
@@ -782,6 +783,13 @@ export class Manager extends Component {
       />
     ));
 
+    
+    let homeButtonFn = null;
+    if(isFunction(this.props.homeButton)) {
+      homeButtonFn = this.props.homeButton;
+    }
+    console.log(homeButtonFn)
+
     return (
       <StyledDeck
         className="spectacle-deck"
@@ -789,7 +797,8 @@ export class Manager extends Component {
         onClick={this.handleClick}
         {...this._getTouchEvents()}
       >
-        {this.props.homeButton && showHomeButton && <HomeButton />}
+        {!homeButtonFn && this.props.homeButton && showHomeButton && <HomeButton homeButton={this.props.homeButton} />}
+        {homeButtonFn && showHomeButton && homeButtonFn()}
         {this.props.controls &&
           showControls && (
             <Controls
