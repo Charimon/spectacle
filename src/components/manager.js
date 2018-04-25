@@ -329,8 +329,11 @@ export class Manager extends Component {
       if (!isNaN(parseInt(slide, 10))) {
         slide = parseInt(slide, 10) - offset;
       }
-      this.context.history.replace(`/${slide}${this._getSuffix()}`);
-      this.viewedIndexes = new Set()
+      this.context.history.push(`/${slide}${this._getSuffix()}`);
+      
+      const tmpViewedIndexes = new Set();
+      this.viewedIndexes.forEach(i => { if(i < e.slide) tmpViewedIndexes.add(i); });
+      this.viewedIndexes = tmpViewedIndexes;
     }
   }
   _prevSlide() {
@@ -408,7 +411,7 @@ export class Manager extends Component {
       } else if (slideIndex < slideReference.length - 1) {
         this.viewedIndexes.add(slideIndex);
         const offset = this._getOffset(slideIndex);
-        this.context.history.replace(
+        this.context.history.push(
           `/${this._getHash(slideIndex + offset) + this._getSuffix()}`
         );
         localStorage.setItem(
